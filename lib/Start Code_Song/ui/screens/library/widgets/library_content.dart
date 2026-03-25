@@ -39,7 +39,7 @@ class LibraryContent extends StatelessWidget {
               onBackgroundImageError: (_, __) {},
             ),
             title: Text(songs[index].title),
-            subtitle: Text(songs[index].artistId),
+            subtitle: Text(mv.getArtistName(songs[index].artistId)),
             onTap: () {
               mv.start(songs[index]);
             },

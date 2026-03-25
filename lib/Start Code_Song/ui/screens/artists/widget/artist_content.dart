@@ -1,20 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../../../model/songs/song.dart';
+import '../../../../model/artists/artist.dart';
 import '../../../theme/theme.dart';
 import '../../../utils/async_value.dart';
-import '../../../widgets/song/song_tile.dart';
-import '../view_model/library_view_model.dart';
+import '../view_model/artist_view_model.dart';
 
-class LibraryContent extends StatelessWidget {
-  const LibraryContent({super.key});
+class ArtistContent extends StatelessWidget {
+  const ArtistContent({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // 1- Read the globbal song repository
-    LibraryViewModel mv = context.watch<LibraryViewModel>();
-
-    AsyncValue<List<Song>> asyncValue = mv.songsValue;
+    ArtistViewModel mv = context.watch<ArtistViewModel>();
+    AsyncValue<List<Artist>> asyncValue = mv.artistsValue;
 
     Widget content;
     switch (asyncValue.state) {
@@ -28,21 +25,18 @@ class LibraryContent extends StatelessWidget {
             style: TextStyle(color: Colors.red),
           ),
         );
-
+        break;
       case AsyncValueState.success:
-        List<Song> songs = asyncValue.data!;
+        List<Artist> artists = asyncValue.data!;
         content = ListView.builder(
-          itemCount: songs.length,
+          itemCount: artists.length,
           itemBuilder: (context, index) => ListTile(
             leading: CircleAvatar(
-              backgroundImage: NetworkImage(songs[index].imageUrl),
+              backgroundImage: NetworkImage(artists[index].imageUrl),
               onBackgroundImageError: (_, __) {},
             ),
-            title: Text(songs[index].title),
-            subtitle: Text(songs[index].artistId),
-            onTap: () {
-              mv.start(songs[index]);
-            },
+            title: Text(artists[index].name),
+            subtitle: Text(artists[index].genre),
           ),
         );
     }
@@ -53,15 +47,11 @@ class LibraryContent extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           SizedBox(height: 16),
-          Text("Library", style: AppTextStyles.heading),
+          Text("Artists", style: AppTextStyles.heading),
           SizedBox(height: 50),
-
           Expanded(child: content),
         ],
       ),
     );
   }
 }
-
-
-// w9-01

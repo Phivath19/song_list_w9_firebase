@@ -33,13 +33,9 @@ class LibraryContent extends StatelessWidget {
         List<Song> songs = asyncValue.data!;
         content = ListView.builder(
           itemCount: songs.length,
-          itemBuilder: (context, index) => ListTile(
-            leading: CircleAvatar(
-              backgroundImage: NetworkImage(songs[index].imageUrl),
-              onBackgroundImageError: (_, __) {},
-            ),
-            title: Text(songs[index].title),
-            subtitle: Text(mv.getArtistName(songs[index].artistId)),
+          itemBuilder: (context, index) => SongTile(
+            song: songs[index],
+            isPlaying: mv.isSongPlaying(songs[index]),
             onTap: () {
               mv.start(songs[index]);
             },

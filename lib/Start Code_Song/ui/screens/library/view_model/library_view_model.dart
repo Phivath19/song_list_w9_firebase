@@ -13,7 +13,6 @@ class LibraryViewModel extends ChangeNotifier {
 
   AsyncValue<List<Song>> songsValue = AsyncValue.loading();
   AsyncValue<List<Artist>> artistsValue = AsyncValue.loading();
-
   LibraryViewModel({
     required this.songRepository,
     required this.playerState,
@@ -24,6 +23,7 @@ class LibraryViewModel extends ChangeNotifier {
     // init
     _init();
   }
+  List<Artist> artists = [];
 
   @override
   void dispose() {
@@ -56,7 +56,7 @@ class LibraryViewModel extends ChangeNotifier {
     artistsValue = AsyncValue.loading();
     notifyListeners();
     try {
-      List<Artist> artists = await artistRepository.fetchArtists();
+      artists = await artistRepository.fetchArtists();
       artistsValue = AsyncValue.success(artists);
     } catch (e) {
       artistsValue = AsyncValue.error(e);
@@ -64,15 +64,23 @@ class LibraryViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  String getArtistName(String artistId) {
-    if (artistsValue.data == null) return artistId;
-    return artistsValue.data!
-        .firstWhere(
-          (a) => a.id == artistId,
-          orElse: () =>
-              Artist(id: artistId, name: artistId, genre: '', imageUrl: ''),
-        )
-        .name;
+  // String getArtistName(String artistId) {
+  //   if (artistsValue.data == null) return artistId;
+  //   return artistsValue.data!
+  //       .firstWhere(
+  //         (a) => a.id == artistId,
+  //         orElse: () =>
+  //             Artist(id: artistId, name: artistId, genre: '', imageUrl: ''),
+  //       )
+  //       .name;
+  // }
+
+  Artist? getArtist(Song song) {
+    try {
+      return artists.firstWhere((a) => a.id == song.artistId);
+    } catch (e) {
+      throw Exception(e);
+    }
   }
 
   bool isSongPlaying(Song song) => playerState.currentSong == song;

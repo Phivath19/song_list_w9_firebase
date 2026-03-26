@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:song_list/Start%20Code_Song/ui/utils/time_format.dart';
 
 import '../../../model/songs/song.dart';
 
@@ -21,11 +22,13 @@ class SongTile extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(15)
+          borderRadius: BorderRadius.circular(15),
         ),
         child: ListTile(
           onTap: onTap,
+          leading: CircleAvatar(backgroundImage: NetworkImage(song.imageUrl)),
           title: Text(song.title),
+          subtitle: Text('${TimeFormat.fomatduration(song.duration)} min'),
           trailing: Text(
             isPlaying ? "Playing" : "",
             style: TextStyle(color: Colors.amber),

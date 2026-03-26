@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:song_list/Start%20Code_Song/ui/widgets/artist/artist_tile.dart';
 import '../../../../model/artists/artist.dart';
 import '../../../theme/theme.dart';
 import '../../../utils/async_value.dart';
@@ -30,14 +31,7 @@ class ArtistContent extends StatelessWidget {
         List<Artist> artists = asyncValue.data!;
         content = ListView.builder(
           itemCount: artists.length,
-          itemBuilder: (context, index) => ListTile(
-            leading: CircleAvatar(
-              backgroundImage: NetworkImage(artists[index].imageUrl),
-              onBackgroundImageError: (_, __) {},
-            ),
-            title: Text(artists[index].name),
-            subtitle: Text(artists[index].genre),
-          ),
+          itemBuilder: (context, index) => ArtistTile(artist: artists[index]),
         );
     }
 
